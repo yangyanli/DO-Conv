@@ -6,7 +6,7 @@ Created by Jinming Cao, <a href="http://yangyan.li" target="_blank">Yangyan Li</
 
 DO-Conv is a depthwise over-parameterized convolutional layer, which can be used as a replacement of conventional convolutional layer in CNNs in the training phase to achieve higher accuracies. In the inference phase, DO-Conv can be fused into a conventional convolutional layer, resulting in the computation amount that is exactly the same as that of a conventional convolutional layer.
 
-Please see our <a href="http://arxiv.org/abs/xxxx.xxxxx" target="_blank">preprint on arXiv</a> for more details, where we demonstrated the advantages of DO-Conv on various benchmark datasets/tasks.
+Please see our <a href="https://arxiv.org/abs/2006.12030" target="_blank">preprint on arXiv</a> for more details, where we demonstrated the advantages of DO-Conv on various benchmark datasets/tasks.
 
 
 ## DO-Conv Usage
