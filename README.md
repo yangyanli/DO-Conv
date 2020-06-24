@@ -123,7 +123,7 @@ We take the model zoo of <a href="https://gluon-cv.mxnet.io/model_zoo/classifica
     <td>+0.14</td>
   </tr>
   <tr>
-    <td>ResNext</td>
+    <td>ResNeXt</td>
     <td>50_32x4d</td>
     <td>79.32</td>
     <td>79.21</td>
