@@ -10,7 +10,7 @@ Please see our <a href="https://arxiv.org/abs/2006.12030" target="_blank">prepri
 
 ## ImageNet Classification Performance
 
-We take the model zoo of <a href="https://gluon-cv.mxnet.io/model_zoo/classification.html" target="_blank">GluonCV</a> as baselines. The settings in the baselines have been tuned to favor baselines, and they are not touched during the switch to DO-Conv. In other words, DO-Conv is the one and only change over baselines, and no hyper-parameter tuning is conducted to favor DO-Conv. We consider GluonCV highly reproducible, but still, to exclude clutter factors as much as possible, we train the baselines ourselves, and compare DO-Conv versions with them, while reporting the performance provided by GluonCV as reference. The results are summarized in this table where the “DO-Conv” column shows the performance gain over the baselines.
+We take the <a href="https://gluon-cv.mxnet.io/model_zoo/classification.html" target="_blank">model zoo</a> of <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a> as baselines. The settings in the baselines have been tuned to favor baselines, and they are not touched during the switch to DO-Conv. In other words, DO-Conv is the one and only change over baselines, and no hyper-parameter tuning is conducted to favor DO-Conv. We consider GluonCV highly reproducible, but still, to exclude clutter factors as much as possible, we train the baselines ourselves, and compare DO-Conv versions with them, while reporting the performance provided by GluonCV as reference. The results are summarized in this table where the “DO-Conv” column shows the performance gain over the baselines.
 <table>
 <thead>
   <tr>
@@ -123,15 +123,36 @@ We take the model zoo of <a href="https://gluon-cv.mxnet.io/model_zoo/classifica
     <td>+0.14</td>
   </tr>
   <tr>
-    <td>ResNeXt</td>
+    <td>ResNext</td>
     <td>50_32x4d</td>
     <td>79.32</td>
     <td>79.21</td>
     <td>+0.40</td>
+  </tr>
+  <tr>
+    <td>MobileNet-v1</td>
+    <td>-</td>
+    <td>73.28</td>
+    <td>73.30</td>
+    <td>+0.03</td>
+  </tr>
+  <tr>
+    <td>MobileNet-v2</td>
+    <td>-</td>
+    <td>72.04</td>
+    <td>71.89</td>
+    <td>+0.16</td>
+  </tr>
+  <tr>
+    <td>MobileNet-v3</td>
+    <td>-</td>
+    <td>75.32</td>
+    <td>75.16</td>
+    <td>+0.14</td>
   </tr>
 </tbody>
 </table>
 
 ## DO-Conv Usage
 
-In thie repo, we provide reference implementation of DO-Conv in Tensorflow, PyTorch and GluonCV, as replacement to tf.keras.layers.Conv2D, torch.nn.Conv2d and mxnet.gluon.nn.Conv2D, respectively. Please see the code for more details.
+In thie repo, we provide reference implementation of DO-Conv in <a href="https://www.tensorflow.org/" target="_blank">Tensorflow</a>, <a href="https://pytorch.org/" target="_blank">PyTorch</a> and <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a>, as replacement to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D" target="_blank">tf.keras.layers.Conv2D</a>, <a href="https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html" target="_blank">torch.nn.Conv2d</a> and <a href="https://beta.mxnet.io/api/gluon/_autogen/mxnet.gluon.nn.Conv2D.html" target="_blank">mxnet.gluon.nn.Conv2D</a>, respectively. Please see the code for more details.
