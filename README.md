@@ -155,4 +155,36 @@ We take the <a href="https://gluon-cv.mxnet.io/model_zoo/classification.html" ta
 
 ## DO-Conv Usage
 
-In thie repo, we provide reference implementation of DO-Conv in <a href="https://www.tensorflow.org/" target="_blank">Tensorflow</a> (tensorflow-gpu==2.2.0), <a href="https://pytorch.org/" target="_blank">PyTorch</a> (pytorch==1.4.0, torchvision==0.5.0) and <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a> (mxnet-cu100==1.5.1.post0, gluoncv==0.6.0), as replacement to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D" target="_blank">tf.keras.layers.Conv2D</a>, <a href="https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html" target="_blank">torch.nn.Conv2d</a> and <a href="https://beta.mxnet.io/api/gluon/_autogen/mxnet.gluon.nn.Conv2D.html" target="_blank">mxnet.gluon.nn.Conv2D</a>, respectively. Please see the code for more details.
+In thie repo, we provide reference implementation of DO-Conv in <a href="https://www.tensorflow.org/" target="_blank">Tensorflow</a>, <a href="https://pytorch.org/" target="_blank">PyTorch</a> (pytorch==1.4.0, torchvision==0.5.0) and <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a> (mxnet-cu100==1.5.1.post0, gluoncv==0.6.0), as replacement to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D" target="_blank">tf.keras.layers.Conv2D</a>, <a href="https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html" target="_blank">torch.nn.Conv2d</a> and <a href="https://beta.mxnet.io/api/gluon/_autogen/mxnet.gluon.nn.Conv2D.html" target="_blank">mxnet.gluon.nn.Conv2D</a>, respectively. Please see the code for more details.
+
+## Example Usage: Tensorflow (tensorflow-gpu==2.2.0)
+We show how to use DO-Conv based on the examples provided in the <a href="https://www.tensorflow.org/tutorials/quickstart/advanced" target="_blank">Tutorial</a> of TensorFlow.
+
+1 . Run the demo example first to get the accuracy of the baseline.
+````
+python sample_tf.py
+````
+If there is any wrong at this step, please check whether the tensorflow version meets the requirements.
+
+2 . Replace these lines:
+````
+self.conv1 = Conv2D(32, 3, activation='relu')
+self.conv2 = Conv2D(8, 3, activation='relu')
+````
+with
+````
+self.conv1 = DOConv2D(32, 3, activation='relu')
+self.conv2 = DOConv2D(8, 3, activation='relu')
+````
+to apply DO-Conv without any other changes. 
+````
+python sample_tf.py
+````
+3 . We provide the performance improvement in this demo example as follows. (averaged accuracy (%) of five runs)
+
+|          | run1  | run2  | run3  | run4  | run5  | avg    | +     |
+|----------|-------|-------|-------|-------|-------|--------|-------|
+| Baseline | 98.5  | 98.51 | 98.54 | 98.46 | 98.51 | 98.504 | -     |
+| DO-Conv  | 98.71 | 98.62 | 98.67 | 98.75 | 98.66 | 98.682 | 0.178 |
+
+4 . Then you can use DO-Conv in your own network in this way.
