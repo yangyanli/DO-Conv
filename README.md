@@ -196,3 +196,54 @@ python sample_tf.py
 | DO-Conv  | 98.71 | 98.62 | 98.67 | 98.75 | 98.66 | 98.682 | 0.178 |
 
 4 . Then you can use DO-Conv in your own network in this way.
+
+## Example Usage: PyTorch (pytorch==1.4.0, torchvision==0.5.0)
+We show how to use DO-Conv based on the examples provided in the <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html?highlight=mnist" target="_blank">Tutorial</a> of PyTorch with MNIST dataset.
+
+1 . Run the demo example first to get the accuracy of the baseline.
+````
+python sample_pt.py
+````
+If there is any wrong at this step, please check whether the pytorch and torchvision versions meets the requirements.
+
+2 . Replace these lines:
+````
+model = nn.Sequential(
+    Conv2d(1, 16, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    Conv2d(16, 16, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    Conv2d(16, 10, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    nn.AdaptiveAvgPool2d(1),
+    Lambda(lambda x: x.view(x.size(0), -1)),
+)
+````
+with
+````
+model = nn.Sequential(
+    DOConv2d(1, 16, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    DOConv2d(16, 16, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    DOConv2d(16, 10, kernel_size=3, stride=2, padding=1),
+    nn.ReLU(),
+    nn.AdaptiveAvgPool2d(1),
+    Lambda(lambda x: x.view(x.size(0), -1)),
+)
+````
+to apply DO-Conv without any other changes. 
+````
+python sample_pt.py
+````
+3 . We provide the performance improvement in this demo example as follows. (averaged accuracy (%) of five runs)
+
+|          | run1  | run2  | run3  | run4  | run5  | avg    | +     |
+|----------|-------|-------|-------|-------|-------|--------|-------|
+| Baseline | 94.63  | 95.31 | 95.23 | 95.24 | 95.37 | 95.156 | -     |
+| DO-Conv  | 95.59 | 95.73 | 95.68 | 95.7 | 95.67 | 95.674 | 0.518 |
+
+4 . Then you can use DO-Conv in your own network in this way.
+
+
+
