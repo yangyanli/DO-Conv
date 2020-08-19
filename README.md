@@ -8,6 +8,12 @@ DO-Conv is a depthwise over-parameterized convolutional layer, which can be used
 
 Please see our <a href="https://arxiv.org/abs/2006.12030" target="_blank">preprint on arXiv</a> for more details, where we demonstrated the advantages of DO-Conv on various benchmark datasets/tasks.
 
+## We Highly Welcome Issues
+
+**We highly welcome issues, rather than emails, for DO-Conv related questions.**
+
+Moreover, it would be great if a **minimal reproduciable example code** is provide in the issue.
+
 ## ImageNet Classification Performance
 
 We take the <a href="https://gluon-cv.mxnet.io/model_zoo/classification.html" target="_blank">model zoo</a> of <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a> as baselines. The settings in the baselines have been tuned to favor baselines, and they are not touched during the switch to DO-Conv. In other words, DO-Conv is the one and only change over baselines, and no hyper-parameter tuning is conducted to favor DO-Conv. We consider GluonCV highly reproducible, but still, to exclude clutter factors as much as possible, we train the baselines ourselves, and compare DO-Conv versions with them, while reporting the performance provided by GluonCV as reference. The results are summarized in this table where the “DO-Conv” column shows the performance gain over the baselines.
