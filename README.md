@@ -166,7 +166,7 @@ In thie repo, we provide reference implementation of DO-Conv in <a href="https:/
 We highly welcome pull requests for adding support for different versions of Pytorch/Tensorflow/GluonCV.
 
 ## Example Usage: Tensorflow (tensorflow-gpu==2.2.0)
-We show how to use DO-Conv based on the examples provided in the <a href="https://www.tensorflow.org/tutorials/quickstart/advanced" target="_blank">Tutorial</a> of TensorFlow.
+We show how to use DO-Conv based on the examples provided in the <a href="https://www.tensorflow.org/tutorials/quickstart/advanced" target="_blank">Tutorial</a> of TensorFlow with MNIST dataset.
 
 1 . Run the demo example first to get the accuracy of the baseline.
 ````
@@ -241,7 +241,39 @@ python sample_pt.py
 |          | run1  | run2  | run3  | run4  | run5  | avg    | +     |
 |----------|-------|-------|-------|-------|-------|--------|-------|
 | Baseline | 94.63  | 95.31 | 95.23 | 95.24 | 95.37 | 95.156 | -     |
-| DO-Conv  | 95.59 | 95.73 | 95.68 | 95.7 | 95.67 | 95.674 | 0.518 |
+| DO-Conv  | 95.59 | 95.73 | 95.68 | 95.70 | 95.67 | 95.674 | 0.518 |
+
+4 . Then you can use DO-Conv in your own network in this way.
+
+## Example Usage: GluonCV (mxnet-cu100==1.5.1.post0, gluoncv==0.6.0)
+We show how to use DO-Conv based on the examples provided in the <a href="https://mxnet.apache.org/versions/1.6/api/python/docs/tutorials/packages/gluon/image/mnist.html" target="_blank">Tutorial</a> of GluonCV with MNIST dataset.
+
+1 . Run the demo example first to get the accuracy of the baseline.
+````
+python sample_gluoncv.py
+````
+If there is any wrong at this step, please check whether the mxnet and gluoncv versions meets the requirements.
+
+2 . Replace these lines:
+````
+self.conv1 = Conv2D(20, kernel_size=(5,5))
+self.conv2 = Conv2D(50, kernel_size=(5,5))
+````
+with
+````
+self.conv1 = DOConv2D(1, 20, kernel_size=(5, 5))
+self.conv2 = DOConv2D(20, 50, kernel_size=(5, 5))
+````
+to apply DO-Conv, note that the 'in_channels' in DOConv2D of GluonCV should be set explicitly. 
+````
+python sample_gluoncv.py
+````
+3 . We provide the performance improvement in this demo example as follows. (averaged accuracy (%) of five runs)
+
+|          | run1  | run2  | run3  | run4  | run5  | avg    | +     |
+|----------|-------|-------|-------|-------|-------|--------|-------|
+| Baseline | 98.10 | 98.10 | 98.10 | 98.10 | 98.10 | 98.10 | -     |
+| DO-Conv  | 98.26 | 98.26 | 98.26 | 98.26 | 98.26 | 98.26 | 0.16 |
 
 4 . Then you can use DO-Conv in your own network in this way.
 
