@@ -1,6 +1,6 @@
 # DO-Conv: Depthwise Over-parameterized Convolutional Layer
 
-Created by Jinming Cao, <a href="http://yangyan.li" target="_blank">Yangyan Li</a>, Mingchao Sun, <a href="https://scholar.google.com/citations?user=NpTmcKEAAAAJ&hl=en" target="_blank">Ying Chen</a>, <a href="https://www.cs.huji.ac.il/~danix/" target="_blank">Dani Lischinski</a>, <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>, <a href="https://cfcs.pku.edu.cn/baoquan/" target="_blank">Baoquan Chen</a>, and <a href="http://irc.cs.sdu.edu.cn/~chtu/index.html" target="_blank">Changhe Tu</a>.
+Created by <a href="https://jinming0912.github.io/" target="_blank">Jinming Cao</a>, <a href="http://yangyan.li" target="_blank">Yangyan Li</a>, Mingchao Sun, <a href="https://scholar.google.com/citations?user=NpTmcKEAAAAJ&hl=en" target="_blank">Ying Chen</a>, <a href="https://www.cs.huji.ac.il/~danix/" target="_blank">Dani Lischinski</a>, <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>, <a href="https://cfcs.pku.edu.cn/baoquan/" target="_blank">Baoquan Chen</a>, and <a href="http://irc.cs.sdu.edu.cn/~chtu/index.html" target="_blank">Changhe Tu</a>. Transactions on Image Processing (TIP) 2022.
 
 ## Introduction
 
