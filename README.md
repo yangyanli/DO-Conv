@@ -14,6 +14,14 @@ Please see our <a href="https://arxiv.org/abs/2006.12030" target="_blank">prepri
 
 Moreover, it would be great if a **minimal reproduciable example code** is provide in the issue.
 
+## News
+
+We open source the FUSION code in PyTorch. Run the demo example (see the **save_with_fusion** function for details) to fold D into W when save model trained with DOConv.
+````
+python sample_pt_with_fusion.py
+````
+The saved models are in the model folder, and the number of model parameters is the same as that using conventional convolutional layers without introducing extra computation at the inference phase. You can refer to the **load_model_with_fusion** function for model loading, be noted to use a network structure that is exactly the same as the original model but using conventional convolutional layers.
+
 ## ImageNet Classification Performance
 
 We take the <a href="https://gluon-cv.mxnet.io/model_zoo/classification.html" target="_blank">model zoo</a> of <a href="https://gluon-cv.mxnet.io/contents.html" target="_blank">GluonCV</a> as baselines. The settings in the baselines have been tuned to favor baselines, and they are not touched during the switch to DO-Conv. In other words, DO-Conv is the one and only change over baselines, and no hyper-parameter tuning is conducted to favor DO-Conv. We consider GluonCV highly reproducible, but still, to exclude clutter factors as much as possible, we train the baselines ourselves, and compare DO-Conv versions with them, while reporting the performance provided by GluonCV as reference. The results are summarized in this table where the “DO-Conv” column shows the performance gain over the baselines.

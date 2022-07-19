@@ -65,12 +65,12 @@ class DOConv2d(Module):
             self.D.data = torch.from_numpy(init_zero)
 
             eye = torch.reshape(torch.eye(M * N, dtype=torch.float32), (1, M * N, M * N))
-            D_diag = eye.repeat((in_channels, 1, self.D_mul // (M * N)))
+            d_diag = eye.repeat((in_channels, 1, self.D_mul // (M * N)))
             if self.D_mul % (M * N) != 0:  # the cases when D_mul > M * N
                 zeros = torch.zeros([in_channels, M * N, self.D_mul % (M * N)])
-                self.D_diag = Parameter(torch.cat([D_diag, zeros], dim=2), requires_grad=False)
+                self.d_diag = Parameter(torch.cat([d_diag, zeros], dim=2), requires_grad=False)
             else:  # the case when D_mul = M * N
-                self.D_diag = Parameter(D_diag, requires_grad=False)
+                self.d_diag = Parameter(d_diag, requires_grad=False)
         ##################################################################################################
 
         if bias:
@@ -116,7 +116,7 @@ class DOConv2d(Module):
         if M * N > 1:
             ######################### Compute DoW #################
             # (input_channels, D_mul, M * N)
-            D = self.D + self.D_diag
+            D = self.D + self.d_diag
             W = torch.reshape(self.W, (self.out_channels // self.groups, self.in_channels, self.D_mul))
 
             # einsum outputs (out_channels // groups, in_channels, M * N),
