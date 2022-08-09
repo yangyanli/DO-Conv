@@ -16,11 +16,23 @@ Moreover, it would be great if a **minimal reproduciable example code** is provi
 
 ## News
 
-We open source the FUSION code in PyTorch. Run the demo example (see the **save_with_fusion** function for details) to fold D into W when save model trained with DOConv.
+1 . We open source the FUSION code in PyTorch. Run the demo example (see the **save_with_fusion** function for details) to fold D into W when save model trained with DOConv.
 ````
 python sample_pt_with_fusion.py
 ````
 The saved models are in the model folder, and the number of model parameters is the same as that using conventional convolutional layers without introducing extra computation at the inference phase. You can refer to the **load_model_with_fusion** function for model loading, be noted to use a network structure that is exactly the same as the original model but using conventional convolutional layers.
+
+2 . We provide DOConv for the new pytorch version (pytorch==1.10.2, torchvision==0.11.3).
+
+Replace this line：
+````
+from do_conv_pytorch import DOConv2d
+````
+with
+````
+from do_conv_pytorch_1_10 import DOConv2d
+````
+to apply this version of DOConv without any other changes.
 
 ## ImageNet Classification Performance
 

@@ -9,7 +9,8 @@ from torch.utils.data import DataLoader
 import numpy as np
 import random
 from torch.nn import Conv2d
-from do_conv_pytorch import DOConv2d
+# from do_conv_pytorch import DOConv2d
+from do_conv_pytorch_1_10 import DOConv2d
 
 random.seed(2020)
 np.random.seed(2020)
@@ -19,7 +20,7 @@ print(torch.cuda.is_available())
 dev = torch.device(
     "cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-
+MODEL_PATH = Path("model")
 DATA_PATH = Path("data")
 PATH = DATA_PATH / "mnist"
 
@@ -49,8 +50,8 @@ x_train, x_train.shape, y_train.min(), y_train.max()
 
 bs = 32  # batch size
 lr = 0.01
-epochs = 15  # how many epochs to train for
-
+# epochs = 15  # how many epochs to train for
+epochs = 1  # how many epochs to train for
 
 train_ds = TensorDataset(x_train, y_train)
 train_dl = DataLoader(train_ds, batch_size=bs)
@@ -109,6 +110,88 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
                 100 * correct / total))
 
 
+def save_with_fusion(model, PATH):
+    # print(len(model.state_dict()))
+
+    # for name, param in model.state_dict().items():
+    #     print(name, "\t", param.size())
+
+    W = []
+    D = []
+    d_diag = []
+    DoW_list = []
+    bias = []
+
+    for i, [name, param] in enumerate(model.state_dict().items()):
+        if ".W" in name:
+            W.append(param)
+        if ".D" in name:
+            D.append(param)
+        if ".d_diag" in name:
+            d_diag.append(param)
+        if ".bias" in name:
+            bias.append(param)
+
+    # print(len(W), len(D), len(d_diag))
+
+    assert len(W) == len(D) == len(d_diag), "Does not satisfy the fusion condition!"
+
+    for i in range(len(W)):
+        D[i] = D[i] + d_diag[i]
+        DoW = torch.einsum('ims,ois->oim', D[i], W[i])
+        # print(DoW.size())
+        DoW_list.append(DoW)
+
+
+    model_with_fusion = nn.Sequential(
+        Conv2d(1, 16, kernel_size=3, stride=2, padding=1),
+        nn.ReLU(),
+        Conv2d(16, 16, kernel_size=3, stride=2, padding=1),
+        nn.ReLU(),
+        Conv2d(16, 10, kernel_size=3, stride=2, padding=1),
+        nn.ReLU(),
+        nn.AdaptiveAvgPool2d(1),
+        Lambda(lambda x: x.view(x.size(0), -1)),
+    )
+    model_with_fusion.to(dev)
+    i = 0
+    j = 0
+    for name, param in model_with_fusion.state_dict().items():
+        if ".weight" in name:
+            param.copy_(torch.reshape(DoW_list[i], param.size()))
+            i = i+1
+        if ".bias" in name:
+            param.copy_(torch.reshape(bias[j], param.size()))
+            j = j + 1
+
+    assert (i == len(W) and j == len(bias)), "Does not satisfy the fusion condition!"
+
+    # for i, [name, param] in enumerate(model_with_fusion.state_dict().items()):
+    #     if name == "0.weight":
+    #         print(param == torch.reshape(DoW_list[0], param.size()))
+    #     if name == "0.bias":
+    #         print(param == torch.reshape(bias[0], param.size()))
+    # torch.save(model_with_fusion.state_dict(), PATH / "model_with_fusion.pt")
+    torch.save(model_with_fusion.state_dict(), PATH / "model_with_fusion.pth")
+
+def load_model_with_fusion(model, PATH, valid_dl):
+    model.load_state_dict(torch.load(PATH / "model_with_fusion.pth"))
+
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for xb, yb in valid_dl:
+            # images, labels = data
+            xb, yb = xb.to(dev), yb.to(dev)
+            outputs = model(xb)
+            _, predicted = torch.max(outputs.data, 1)
+            total += yb.size(0)
+            correct += (predicted == yb).sum().item()
+
+    print('Accuracy of the network on the test set: %.2f %%' % (
+            100 * correct / total))
+
 
 def get_data(train_ds, valid_ds, bs):
     return (
@@ -166,7 +249,9 @@ model = nn.Sequential(
 
 model.to(dev)
 opt = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
-fit(epochs, model, loss_func, opt, train_dl, valid_dl)
+# fit(epochs, model, loss_func, opt, train_dl, valid_dl)
+# save_with_fusion(model, MODEL_PATH)
+load_model_with_fusion(model, MODEL_PATH, valid_dl)
 
 
 
